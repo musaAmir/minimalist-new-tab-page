@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>New Tab</title>
+</head>
+<body id="body">
+
+<div class="main-container vertical">
+
+	<section class="time">
+		<div id="time"></div>
+	</section>
+	<section class="list">
+	</section>
+	<section class="edit">
+		<div class="hidden" id="edit">
+			<textarea id="textarea" placeholder="duckduckgo.com ddg"></textarea>
+			<div>
+				theme: <select id="theme">
+					<option value="light">light</option>
+					<option value="dark">dark</option>
+					<option value="black">black</option>
+					<option value="red">red</option>
+					<option value="blue">blue</option>
+					<option value="purple">purple</option>
+					<option value="yellow">yellow</option>
+				</select>
+			</div>
+			<div>
+				font: <select id="font">
+					<option value="system">system</option>
+					<option value="monospace">monospace</option>
+					<option value="sans-serif">sans-serif</option>
+					<option value="serif">serif</option>
+				</select>
+			</div>
+		</div>
+		<button id="edit-button" class="button edit-button">edit</button>
+	</section>
+</div>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
