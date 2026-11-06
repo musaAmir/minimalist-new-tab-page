@@ -13,6 +13,11 @@ var options = {
   font: 'monospace'
 };
 
+// chrome.storage is async, so apply this device's last theme now to avoid painting the wrong one first.
+try {
+  document.body.setAttribute('class', localStorage.getItem('bodyClass') || options.theme + ' ' + options.font);
+} catch (e) {}
+
 window.addEventListener('load', init, false);
 
 function init() {
@@ -180,6 +185,9 @@ function loadFont(font) {
 
 function setBodyClass() {
   body.setAttribute('class', options.theme + ' ' + options.font);
+  try {
+    localStorage.setItem('bodyClass', body.getAttribute('class'));
+  } catch (e) {}
 }
 
 function time() {
