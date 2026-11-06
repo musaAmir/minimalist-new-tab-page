@@ -135,6 +135,7 @@ function editLinks() {
 
 function changeTheme(e) {
   loadTheme(e.target.value);
+  api.storage.sync.set({ options: options });
 }
 
 function loadTheme(theme) {
@@ -145,6 +146,7 @@ function loadTheme(theme) {
 
 function changeFont(e) {
   loadFont(e.target.value);
+  api.storage.sync.set({ options: options });
 }
 
 function loadFont(font) {
@@ -155,7 +157,6 @@ function loadFont(font) {
 
 function setBodyClass() {
   body.setAttribute('class', options.theme + ' ' + options.font);
-  api.storage.sync.set({ options: options });
 }
 
 function time() {
