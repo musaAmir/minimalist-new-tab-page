@@ -10,10 +10,12 @@ html,body {
   line-height: 1.375rem;
   width: 100%;
   min-height: 100vh;
-  background: #f5f6f6;
   margin: 0;
   /*overflow: hidden;*/
 }
+
+/* Set on body only, so the theme background also fills the area behind the page. */
+body { background: #f5f6f6; }
 
 ul { margin: 0; }
 
