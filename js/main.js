@@ -122,9 +122,14 @@ function editLinks() {
 
   var links = textarea.value.trim();
   if (links != _links) {
-    api.storage.sync.set({ links: links });
-    while (listParent.firstChild) listParent.removeChild(listParent.firstChild);
-    load();
+    api.storage.sync.set({ links: links }).then(function() {
+      while (listParent.firstChild) listParent.removeChild(listParent.firstChild);
+      load();
+    }, function(err) {
+      // Keep the editor open so the typed text isn't lost (sync allows about 8 KB per item).
+      editSection.classList.remove('hidden');
+      alert('Your links were not saved: ' + err.message + '\n\nChrome sync allows about 8 KB of links. Your text is still in the editor.');
+    });
   }
 }
 
