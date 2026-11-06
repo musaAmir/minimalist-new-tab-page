@@ -28,6 +28,7 @@ function init() {
   timeElem = document.getElementById('time');
   editSection = document.getElementById('edit');
   load();
+  api.storage.onChanged.addListener(onStorageChanged);
 
   time();
   setInterval(time, 1000);
@@ -38,14 +39,39 @@ function load() {
     if (item.links) {
       textarea.value = item.links.trim();
     }
-    parseLinks(item.links);
-    _links = item.links;
+    renderLinks(item.links);
   });
   api.storage.sync.get('options', function(item) {
     options = item.options || options;
     loadTheme(options.theme);
     loadFont(options.font);
   });
+}
+
+// Fires for saves in this tab, other open tabs and other devices.
+function onStorageChanged(changes, area) {
+  if (area !== 'sync') return;
+
+  if (changes.links) {
+    var links = changes.links.newValue;
+    // Don't overwrite text the user is still editing.
+    if (editSection.classList.contains('hidden') || textarea.value.trim() === (_links || '')) {
+      textarea.value = links ? links.trim() : '';
+    }
+    renderLinks(links);
+  }
+
+  if (changes.options && changes.options.newValue) {
+    options = changes.options.newValue;
+    loadTheme(options.theme);
+    loadFont(options.font);
+  }
+}
+
+function renderLinks(links) {
+  while (listParent.firstChild) listParent.removeChild(listParent.firstChild);
+  parseLinks(links);
+  _links = links;
 }
 
 function parseLinks(links) {
@@ -122,10 +148,7 @@ function editLinks() {
 
   var links = textarea.value.trim();
   if (links != _links) {
-    api.storage.sync.set({ links: links }).then(function() {
-      while (listParent.firstChild) listParent.removeChild(listParent.firstChild);
-      load();
-    }, function(err) {
+    api.storage.sync.set({ links: links }).catch(function(err) {
       // Keep the editor open so the typed text isn't lost (sync allows about 8 KB per item).
       editSection.classList.remove('hidden');
       alert('Your links were not saved: ' + err.message + '\n\nChrome sync allows about 8 KB of links. Your text is still in the editor.');
