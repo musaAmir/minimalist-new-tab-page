@@ -83,7 +83,7 @@ function parseLinks(links) {
 }
 
 function createLinks(linksArr) {
-  var httpRegex = /^https?:\/\//;
+  var httpRegex = /^https?:\/\//i;
   var urlRegex = /^\S+\.\S+/;
   var lastRowWasHeader = false;
 
@@ -113,7 +113,7 @@ function createLinks(linksArr) {
       continue;
     }
 
-    var firstWord = row.split(' ')[0];
+    var firstWord = row.split(/\s/)[0];
     if (httpRegex.test(firstWord) || urlRegex.test(firstWord)) {
       var a = document.createElement('a');
       var link = firstWord;
@@ -121,7 +121,7 @@ function createLinks(linksArr) {
         link = 'https://' + link;
       }
       a.setAttribute('href', link);
-      var spaceIndex = row.indexOf(' ');
+      var spaceIndex = row.search(/\s/);
       a.textContent = spaceIndex === -1 ? firstWord : row.slice(spaceIndex + 1);
       a.classList.add('button');
       li.appendChild(a);
